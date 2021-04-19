@@ -74,8 +74,6 @@ const getAllBooksHandler = (request, h) => {
   const booksResult = [];
   const { reading, finished, name: bookName } = request.query;
 
-  console.log(reading);
-
   if (bookName) {
     const stringRegex = new RegExp(`\\b${bookName}\\b`, 'gi');
     books.forEach((book) => {
@@ -87,14 +85,14 @@ const getAllBooksHandler = (request, h) => {
   }
 
   if (reading !== undefined) {
-    if (reading) {
+    if (reading === '1') {
       books.forEach((book) => {
         if (book.reading) {
           filterResult.push(book);
         }
       });
       booksArray = filterResult;
-    } else {
+    } else if (reading === '0') {
       books.forEach((book) => {
         if (!book.reading) {
           filterResult.push(book);
@@ -103,10 +101,23 @@ const getAllBooksHandler = (request, h) => {
       booksArray = filterResult;
     }
   }
-
-  // if (finished) {
-
-  // }
+  if (finished !== undefined) {
+    if (finished === '1') {
+      books.forEach((book) => {
+        if (book.finished) {
+          filterResult.push(book);
+        }
+      });
+      booksArray = filterResult;
+    } else if (finished === '0') {
+      books.forEach((book) => {
+        if (!book.finished) {
+          filterResult.push(book);
+        }
+      });
+      booksArray = filterResult;
+    }
+  }
 
   if (booksArray) {
     booksArray.forEach((book) => {
